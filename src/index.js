@@ -11,6 +11,30 @@ import desertdn from './img/desertdn.png';
 import desertrt from './img/desertrt.png';
 import desertlf from './img/desertlf.png';
 
+
+//remove lunarsky-pos-x2.jpg
+fetch('https://scum.systems/misc/skyboxes/')
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+
+    // detect skyboxes with more than 6 files & remove
+    const regex = new RegExp('/^(.*?)\-(pos|neg)\-[x-y]\.jpg/');
+    for (var i = 0; i < data.length; i++) {
+        console.log(regex.test(data[i].name), data[i].name);
+    }
+
+    // group into arrays of 6
+    var group = [];
+    for (var i = 0, j = 0; i < data.length; i++) {
+        if (i >= 6 && i % 6 === 0)
+            j++;
+        group[j] = group[j] || [];
+        group[j].push(data[i])
+    }
+    console.log(group);
+});
+
 function main() {
     const canvas = document.querySelector('.webgl');
     const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
@@ -47,7 +71,7 @@ function main() {
     // const sphere = new THREE.Mesh(geometry, material);
     // scene.add(sphere)
 
-    for ( let i = 0; i < 50; i ++ ) {
+    for ( let i = 0; i < 5; i ++ ) {
 
         const mesh = new THREE.Mesh( geometry, material );
 
