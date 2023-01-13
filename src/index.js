@@ -16,13 +16,11 @@ import desertlf from './img/desertlf.png';
 fetch('https://scum.systems/misc/skyboxes/')
   .then((response) => response.json())
   .then((data) => {
-    console.log(data);
-
     // detect skyboxes with more than 6 files & remove
-    const regex = new RegExp('/^(.*?)\-(pos|neg)\-[x-y]\.jpg/');
-    for (var i = 0; i < data.length; i++) {
-        console.log(regex.test(data[i].name), data[i].name);
-    }
+    // const regex = new RegExp('/^(.*?)\-(pos|neg)\-[x-y]\.jpg/');
+    // for (var i = 0; i < data.length; i++) {
+    //     console.log(regex.test(data[i].name), data[i].name);
+    // }
 
     // group into arrays of 6
     var group = [];
@@ -30,9 +28,33 @@ fetch('https://scum.systems/misc/skyboxes/')
         if (i >= 6 && i % 6 === 0)
             j++;
         group[j] = group[j] || [];
-        group[j].push(data[i])
+        group[j].push(data[i].name)
     }
-    console.log(group);
+
+    // pick random group and sort
+    var randGroup = group[Math.floor(Math.random() * group.length)];
+    var sortedGroup = [];
+    var imagePath = "https://scum.systems/misc/skyboxes/"
+    for (var i = 0; i < 6; i++) {
+        if (randGroup[i].indexOf("-pos-x") !== -1)
+            sortedGroup[0] = imagePath + randGroup[i];
+            
+        if (randGroup[i].indexOf("-neg-x") !== -1)
+            sortedGroup[1] = imagePath + randGroup[i];
+            
+        if (randGroup[i].indexOf("-pos-y") !== -1)
+            sortedGroup[2] = imagePath + randGroup[i];
+
+        if (randGroup[i].indexOf("-neg-y") !== -1)
+            sortedGroup[3] = imagePath + randGroup[i];
+            
+        if (randGroup[i].indexOf("-pos-z") !== -1)
+            sortedGroup[4] = imagePath + randGroup[i];
+            
+        if (randGroup[i].indexOf("-neg-z") !== -1)
+            sortedGroup[5] = imagePath + randGroup[i];
+    }
+
 });
 
 function main() {
