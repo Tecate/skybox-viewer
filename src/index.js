@@ -23,8 +23,7 @@ buttonEl.onclick = function(){
 };
 document.getElementById('controls').appendChild(buttonEl);
 
-var skyboxNameEl = document.createElement('div');
-document.getElementById('controls').appendChild(skyboxNameEl);
+var skyboxNameEl = document.getElementById('skybox-title');
 
 var codeEl = document.getElementById('code');
 codeEl.id = "code";

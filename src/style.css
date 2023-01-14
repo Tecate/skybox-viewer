@@ -19,6 +19,8 @@
 
   #controls {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     bottom: 0;
     width: 450px;
     height: 350px;
@@ -26,10 +28,22 @@
     color: aqua;
     font-family: monospace;
     padding: 10px;
+    box-sizing: border-box;
+  }
+
+  #controls button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  #skybox-title {
+    font-size: larger;
+    margin-bottom: 10px;
   }
 
   #skybox-list {
-    max-height: 25%;
+    max-height: 85%;
     overflow-y: auto;
     margin-bottom: 10px;
   }
@@ -56,9 +70,22 @@
     padding: 10px;
     white-space: pre;
     cursor: pointer;
+    overflow: auto;
+  }
+
+  summary:hover {
+    cursor: pointer;
   }
 
   a {
     color:fuchsia;
     text-decoration: none;
+  }
+
+  @media only screen and (max-width: 450px) {
+    #controls {
+      width: 100vw;
+      height: 20vh;
+    }
+    /* #code { display: none; } */
   }
