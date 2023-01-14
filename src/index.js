@@ -13,16 +13,24 @@ import desertrt from './img/desertrt.png';
 import desertlf from './img/desertlf.png';
 
 
-var button = document.createElement('button');
-button.innerHTML = 'RANDOM SKYBOX';
-button.onclick = function(){
-  loadRandSkybox();
+var buttonEl = document.createElement('button');
+buttonEl.innerHTML = 'RANDOM SKYBOX';
+buttonEl.onclick = function(){
+    loadRandSkybox();
+    for (const child of listEl.children) {
+        child.classList.remove('active');
+    }
 };
-document.getElementById('controls').appendChild(button);
+document.getElementById('controls').appendChild(buttonEl);
 
 var skyboxNameEl = document.createElement('div');
-skyboxNameEl.innerText = 'Name: '// + skyboxname; // .substring(0, str.length-3)
 document.getElementById('controls').appendChild(skyboxNameEl);
+
+var codeEl = document.createElement('div');
+codeEl.id = "code"
+document.getElementById('controls').appendChild(codeEl);
+
+var listEl = document.getElementById('skybox-list');
 
 var skyboxList = [];
 fetch('https://scum.systems/misc/skyboxes/')
@@ -41,16 +49,34 @@ fetch('https://scum.systems/misc/skyboxes/')
         skyboxList[j] = skyboxList[j] || [];
         skyboxList[j].push(data[i].name)
     }
+
+    for (var i = 0; i < skyboxList.length; i++) {
+        let rowEl = document.createElement('div');
+        rowEl.innerText = skyboxList[i][0].substring(0, skyboxList[i][0].length-10)
+        rowEl.setAttribute("data-arrayposition", i)
+        listEl.appendChild(rowEl);
+        rowEl.onclick = function(){
+            loadRandSkybox(rowEl);
+            for (const child of listEl.children) {
+                child.classList.remove('active');
+            }
+            rowEl.classList.add("active");
+        };
+    }
 });
 
-function randSkybox() {
+function randSkybox(name) {
     if (skyboxList.length == 0) {
         console.log("No skyboxes found.");
         return;
     }
 
-    // pick random skybox
-    var skybox = skyboxList[Math.floor(Math.random() * skyboxList.length)];
+    if (typeof name !== 'undefined') {
+        var skybox = skyboxList[name.dataset.arrayposition]
+    } else {
+        // pick random skybox
+        var skybox = skyboxList[Math.floor(Math.random() * skyboxList.length)];
+    }
 
     // sort into loader format
     var sortedGroup = [];
@@ -74,11 +100,25 @@ function randSkybox() {
         if (skybox[i].indexOf("-neg-z") !== -1)
             sortedGroup[5] = imagePath + skybox[i];
     }
+
+    skyboxNameEl.innerText = 'Name: ' + skybox[0].substring(0, skybox[0].length-10);
+    codeEl.innerText = 
+`const loader = new THREE.CubeTextureLoader();
+const skybox = loader.load([
+    ${sortedGroup[0]},
+    ${sortedGroup[1]},
+    ${sortedGroup[2]},
+    ${sortedGroup[3]},
+    ${sortedGroup[4]},
+    ${sortedGroup[5]},
+]);
+scene.background = skybox;`
+
     return sortedGroup;
 }
 
-function loadRandSkybox() {
-    var newSkybox = loader.load(randSkybox());
+function loadRandSkybox(name) {
+    var newSkybox = loader.load(randSkybox(name));
     scene.background = newSkybox;
     material.envMap = newSkybox;
 }

@@ -20,9 +20,39 @@
     position: absolute;
     bottom: 0;
     width: 40%;
-    height: 200px;
+    height: 50%;
     background: rgba(0,0,0,0.5);
     color: aqua;
     font-family: monospace;
     padding: 10px;
+  }
+
+  #skybox-list {
+    max-height: 25%;
+    overflow-y: auto;
+    margin-bottom: 10px;
+  }
+
+  #skybox-list div:nth-child(even) {
+    background: rgba(0,0,0,0.1)
+  }
+
+  #skybox-list div:hover {
+    background: rgba(0,0,0,0.3);
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+
+  #skybox-list div.active {
+    color: greenyellow;
+    background: rgba(0,0,0,0.3);
+  }
+
+  #code {
+    background: rgba(0,0,0,0.1);
+    border: 1px solid gray;
+    margin-top: 10px;
+    padding: 10px;
+    white-space: pre;
   }
