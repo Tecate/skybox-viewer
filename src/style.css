@@ -19,8 +19,8 @@
   #controls {
     position: absolute;
     bottom: 0;
-    width: 40%;
-    height: 50%;
+    width: 450px;
+    height: 350px;
     background: rgba(0,0,0,0.5);
     color: aqua;
     font-family: monospace;
@@ -52,7 +52,12 @@
   #code {
     background: rgba(0,0,0,0.1);
     border: 1px solid gray;
-    margin-top: 10px;
     padding: 10px;
     white-space: pre;
+    cursor: pointer;
+  }
+
+  a {
+    color:fuchsia;
+    text-decoration: none;
   }

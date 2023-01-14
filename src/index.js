@@ -26,10 +26,19 @@ document.getElementById('controls').appendChild(buttonEl);
 var skyboxNameEl = document.createElement('div');
 document.getElementById('controls').appendChild(skyboxNameEl);
 
-var codeEl = document.createElement('div');
-codeEl.id = "code"
-document.getElementById('controls').appendChild(codeEl);
-
+var codeEl = document.getElementById('code');
+codeEl.id = "code";
+codeEl.onclick = function(){
+    // var range = document.createRange();
+    // range.selectNode(codeEl);
+    // window.getSelection().removeAllRanges(); // clear current selection
+    // window.getSelection().addRange(range); // to select text
+    // document.execCommand("copy");
+    // window.getSelection().removeAllRanges();
+    // codeEl.select();
+    // codeEl.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(codeEl.innerText);
+}
 var listEl = document.getElementById('skybox-list');
 
 var skyboxList = [];
@@ -139,7 +148,7 @@ function loadRandSkybox(name) {
 
     const controls = new OrbitControls(camera, renderer.domElement)
 
-    // skybox - https://r105.threejsfundamentals.org/threejs/lessons/threejs-backgrounds.html
+    // skybox - https://threejs.org/manual/#en/backgrounds
     const loader = new THREE.CubeTextureLoader();
     // loader.setPath( 'img/' );
     const skybox = loader.load([
