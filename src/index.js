@@ -29,14 +29,6 @@ document.getElementById('controls').appendChild(skyboxNameEl);
 var codeEl = document.getElementById('code');
 codeEl.id = "code";
 codeEl.onclick = function(){
-    // var range = document.createRange();
-    // range.selectNode(codeEl);
-    // window.getSelection().removeAllRanges(); // clear current selection
-    // window.getSelection().addRange(range); // to select text
-    // document.execCommand("copy");
-    // window.getSelection().removeAllRanges();
-    // codeEl.select();
-    // codeEl.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(codeEl.innerText);
 }
 var listEl = document.getElementById('skybox-list');
@@ -50,6 +42,8 @@ fetch('https://scum.systems/misc/skyboxes/')
     // for (var i = 0; i < data.length; i++) {
     //     console.log(regex.test(data[i].name), data[i].name);
     // }
+
+    // also need to check if all images are the same width & height
 
     // group into arrays of 6
     for (var i = 0, j = 0; i < data.length; i++) {
@@ -72,6 +66,8 @@ fetch('https://scum.systems/misc/skyboxes/')
             rowEl.classList.add("active");
         };
     }
+    // get first skybox
+    loadRandSkybox();
 });
 
 function randSkybox(name) {
@@ -148,23 +144,13 @@ function loadRandSkybox(name) {
 
     const controls = new OrbitControls(camera, renderer.domElement)
 
-    // skybox - https://threejs.org/manual/#en/backgrounds
     const loader = new THREE.CubeTextureLoader();
-    // loader.setPath( 'img/' );
-    const skybox = loader.load([
-      desertft, // pos-x
-      desertbk, // neg-x
-      desertup, // pos-y
-      desertdn, // neg-y
-      desertrt, // pos-z
-      desertlf, // neg-z
-   ]);
-    scene.background = skybox;
 
     const spheres = [];
 
     const geometry = new THREE.SphereGeometry( 0.1, 32, 16 );
-    const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: skybox } );
+    // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: skybox } );
+    const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
     // const sphere = new THREE.Mesh(geometry, material);
     // scene.add(sphere)
 
@@ -184,26 +170,8 @@ function loadRandSkybox(name) {
 
     }
 
-    // const color = 0xFFFFFF;
-    // const intensity = 1;
-    // const light = new THREE.DirectionalLight(color, intensity);
-    // light.position.set(-1, 2, 4);
-    // scene.add(light);
-
-    // const size = 10;
-    // const divisions = 10;
-    // const gridHelper = new THREE.GridHelper( size, divisions );
-    // scene.add( gridHelper );
-
-    // const axesHelper = new THREE.AxesHelper( 1 );
-    // scene.add( axesHelper );
-
     // render loop
     function render(time) {
-        // time *= 0.001;  // convert time to seconds
-        // cube.rotation.x = time;
-        // cube.rotation.y = time;
-
         const timer = 0.0001 * Date.now();
         for ( let i = 0, il = spheres.length; i < il; i ++ ) {
 
@@ -212,6 +180,14 @@ function loadRandSkybox(name) {
             sphere.position.x = 5 * Math.cos( timer + i );
             sphere.position.y = 5 * Math.sin( timer + i * 1.1 );
 
+        }
+        var autoRotate = true;
+        if (autoRotate == true) {
+            controls.enableZoom = false;
+            const camTimer = - performance.now() * 0.0003;
+            camera.position.x = 10 * Math.cos( camTimer );
+            camera.position.z = 10 * Math.sin( camTimer );
+            camera.lookAt( scene.position );
         }
 
         // responsive canvas - https://r105.threejsfundamentals.org/threejs/lessons/threejs-responsive.html

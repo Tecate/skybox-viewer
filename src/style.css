@@ -6,7 +6,8 @@
   html,
   body {
     overflow: hidden;
-  }
+    background-color: black;
+}
   
   .webgl {
     position: fixed;
