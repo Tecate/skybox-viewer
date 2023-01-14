@@ -31,14 +31,29 @@
     box-sizing: border-box;
   }
 
-  #controls button {
+  #controls #rand-button {
+    font-family: monospace;
+    font-size: 18px;
+    font-weight: 900;
     position: absolute;
     top: 10px;
     right: 10px;
+    background-color: rgb(27, 27, 27);
+    /* border: 1px solid grey; */
+    color: deeppink;
+    padding: 0px 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  #controls #rand-button:hover {
+    color: rgb(25, 0, 255);
   }
 
   #skybox-title {
-    font-size: larger;
+    color: #fff;
+    font-size: 18px;
     margin-bottom: 10px;
   }
 
@@ -64,20 +79,36 @@
     background: rgba(0,0,0,0.3);
   }
 
+  #controls details {
+    color: #fff;
+  }
+
   #code {
     background: rgba(0,0,0,0.1);
+    color: aqua;
     border: 1px solid gray;
     padding: 10px;
     white-space: pre;
     cursor: pointer;
     overflow: auto;
+    position: relative;
   }
+
+  #code::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3C!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'%3E%3Csvg fill='%23FFFFFF' height='20px' width='20px' version='1.1' id='Capa_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 330 330' xml:space='preserve'%3E%3Cg%3E%3Cpath d='M35,270h45v45c0,8.284,6.716,15,15,15h200c8.284,0,15-6.716,15-15V75c0-8.284-6.716-15-15-15h-45V15 c0-8.284-6.716-15-15-15H35c-8.284,0-15,6.716-15,15v240C20,263.284,26.716,270,35,270z M280,300H110V90h170V300z M50,30h170v30H95 c-8.284,0-15,6.716-15,15v165H50V30z'/%3E%3Cpath d='M155,120c-8.284,0-15,6.716-15,15s6.716,15,15,15h80c8.284,0,15-6.716,15-15s-6.716-15-15-15H155z'/%3E%3Cpath d='M235,180h-80c-8.284,0-15,6.716-15,15s6.716,15,15,15h80c8.284,0,15-6.716,15-15S243.284,180,235,180z'/%3E%3Cpath d='M235,240h-80c-8.284,0-15,6.716-15,15c0,8.284,6.716,15,15,15h80c8.284,0,15-6.716,15-15C250,246.716,243.284,240,235,240z '/%3E%3C/g%3E%3C/svg%3E");  }
 
   summary:hover {
     cursor: pointer;
   }
 
   a {
+    background-color: #000;
     color:fuchsia;
     text-decoration: none;
   }

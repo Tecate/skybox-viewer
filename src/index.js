@@ -13,7 +13,8 @@ import desertrt from './img/desertrt.png';
 import desertlf from './img/desertlf.png';
 
 
-var buttonEl = document.createElement('button');
+var buttonEl = document.createElement('div');
+buttonEl.id = "rand-button"
 buttonEl.innerHTML = 'RANDOM SKYBOX';
 buttonEl.onclick = function(){
     loadRandSkybox();
@@ -29,6 +30,7 @@ var codeEl = document.getElementById('code');
 codeEl.id = "code";
 codeEl.onclick = function(){
     navigator.clipboard.writeText(codeEl.innerText);
+    // document.getElementById("code-title")
 }
 var listEl = document.getElementById('skybox-list');
 
@@ -105,7 +107,7 @@ function randSkybox(name) {
             sortedGroup[5] = imagePath + skybox[i];
     }
 
-    skyboxNameEl.innerText = 'Name: ' + skybox[0].substring(0, skybox[0].length-10);
+    skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
     codeEl.innerText = 
 `const loader = new THREE.CubeTextureLoader();
 const skybox = loader.load([
@@ -137,11 +139,14 @@ function loadRandSkybox(name) {
     const near = 0.1;
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 2;
+    camera.position.z = 10;
 
     const scene = new THREE.Scene();
 
     const controls = new OrbitControls(camera, renderer.domElement)
+    controls.autoRotate = true;
+    controls.enableZoom = false;
+    controls.enableDamping = true;
 
     const loader = new THREE.CubeTextureLoader();
 
@@ -150,44 +155,27 @@ function loadRandSkybox(name) {
     const geometry = new THREE.SphereGeometry( 0.1, 32, 16 );
     // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: skybox } );
     const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-    // const sphere = new THREE.Mesh(geometry, material);
-    // scene.add(sphere)
 
     for ( let i = 0; i < 5; i ++ ) {
-
         const mesh = new THREE.Mesh( geometry, material );
-
         mesh.position.x = Math.random() * 10 - 5;
         mesh.position.y = Math.random() * 10 - 5;
         mesh.position.z = Math.random() * 10 - 5;
-
         mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 3 + 1;
-
         scene.add( mesh );
-
         spheres.push( mesh );
-
     }
 
     // render loop
     function render(time) {
         const timer = 0.0001 * Date.now();
         for ( let i = 0, il = spheres.length; i < il; i ++ ) {
-
             const sphere = spheres[ i ];
-
             sphere.position.x = 5 * Math.cos( timer + i );
             sphere.position.y = 5 * Math.sin( timer + i * 1.1 );
+        }
 
-        }
-        var autoRotate = true;
-        if (autoRotate == true) {
-            controls.enableZoom = false;
-            const camTimer = - performance.now() * 0.0003;
-            camera.position.x = 10 * Math.cos( camTimer );
-            camera.position.z = 10 * Math.sin( camTimer );
-            camera.lookAt( scene.position );
-        }
+        controls.update(); // for autoRotate
 
         // responsive canvas - https://r105.threejsfundamentals.org/threejs/lessons/threejs-responsive.html
         const canvas = renderer.domElement;
