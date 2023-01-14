@@ -15,3 +15,14 @@
     width: 100vw;
     height: 100vh;
   }
+
+  #controls {
+    position: absolute;
+    bottom: 0;
+    width: 40%;
+    height: 200px;
+    background: rgba(0,0,0,0.5);
+    color: aqua;
+    font-family: monospace;
+    padding: 10px;
+  }

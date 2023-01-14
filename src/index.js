@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import Stats from 'stats-js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import GUI from 'lil-gui';
 
 import "./style.css";
 
@@ -12,7 +13,18 @@ import desertrt from './img/desertrt.png';
 import desertlf from './img/desertlf.png';
 
 
-//remove lunarsky-pos-x2.jpg
+var button = document.createElement('button');
+button.innerHTML = 'RANDOM SKYBOX';
+button.onclick = function(){
+  loadRandSkybox();
+};
+document.getElementById('controls').appendChild(button);
+
+var skyboxNameEl = document.createElement('div');
+skyboxNameEl.innerText = 'Name: '// + skyboxname; // .substring(0, str.length-3)
+document.getElementById('controls').appendChild(skyboxNameEl);
+
+var skyboxList = [];
 fetch('https://scum.systems/misc/skyboxes/')
   .then((response) => response.json())
   .then((data) => {
@@ -23,41 +35,55 @@ fetch('https://scum.systems/misc/skyboxes/')
     // }
 
     // group into arrays of 6
-    var group = [];
     for (var i = 0, j = 0; i < data.length; i++) {
         if (i >= 6 && i % 6 === 0)
             j++;
-        group[j] = group[j] || [];
-        group[j].push(data[i].name)
+        skyboxList[j] = skyboxList[j] || [];
+        skyboxList[j].push(data[i].name)
+    }
+});
+
+function randSkybox() {
+    if (skyboxList.length == 0) {
+        console.log("No skyboxes found.");
+        return;
     }
 
-    // pick random group and sort
-    var randGroup = group[Math.floor(Math.random() * group.length)];
+    // pick random skybox
+    var skybox = skyboxList[Math.floor(Math.random() * skyboxList.length)];
+
+    // sort into loader format
     var sortedGroup = [];
     var imagePath = "https://scum.systems/misc/skyboxes/"
     for (var i = 0; i < 6; i++) {
-        if (randGroup[i].indexOf("-pos-x") !== -1)
-            sortedGroup[0] = imagePath + randGroup[i];
+        if (skybox[i].indexOf("-pos-x") !== -1)
+            sortedGroup[0] = imagePath + skybox[i];
             
-        if (randGroup[i].indexOf("-neg-x") !== -1)
-            sortedGroup[1] = imagePath + randGroup[i];
+        if (skybox[i].indexOf("-neg-x") !== -1)
+            sortedGroup[1] = imagePath + skybox[i];
             
-        if (randGroup[i].indexOf("-pos-y") !== -1)
-            sortedGroup[2] = imagePath + randGroup[i];
+        if (skybox[i].indexOf("-pos-y") !== -1)
+            sortedGroup[2] = imagePath + skybox[i];
 
-        if (randGroup[i].indexOf("-neg-y") !== -1)
-            sortedGroup[3] = imagePath + randGroup[i];
+        if (skybox[i].indexOf("-neg-y") !== -1)
+            sortedGroup[3] = imagePath + skybox[i];
             
-        if (randGroup[i].indexOf("-pos-z") !== -1)
-            sortedGroup[4] = imagePath + randGroup[i];
+        if (skybox[i].indexOf("-pos-z") !== -1)
+            sortedGroup[4] = imagePath + skybox[i];
             
-        if (randGroup[i].indexOf("-neg-z") !== -1)
-            sortedGroup[5] = imagePath + randGroup[i];
+        if (skybox[i].indexOf("-neg-z") !== -1)
+            sortedGroup[5] = imagePath + skybox[i];
     }
+    return sortedGroup;
+}
 
-});
+function loadRandSkybox() {
+    var newSkybox = loader.load(randSkybox());
+    scene.background = newSkybox;
+    material.envMap = newSkybox;
+}
 
-function main() {
+// function main() {
     const canvas = document.querySelector('.webgl');
     const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
     renderer.setClearColor(0x222222);
@@ -120,8 +146,8 @@ function main() {
     // const gridHelper = new THREE.GridHelper( size, divisions );
     // scene.add( gridHelper );
 
-    const axesHelper = new THREE.AxesHelper( 1 );
-    scene.add( axesHelper );
+    // const axesHelper = new THREE.AxesHelper( 1 );
+    // scene.add( axesHelper );
 
     // render loop
     function render(time) {
@@ -156,9 +182,9 @@ function main() {
     }
 
     requestAnimationFrame(render);    
-}
+// }
 
-main();
+// main();
 
 var stats = new Stats();
 stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
