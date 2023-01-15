@@ -17,7 +17,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             hash: true,
-            title: 'Webpack & three.js testing',
+            title: 'Skyboxes - Scum.Systems',
             template: './src/index.html',
             filename: 'index.html',
             inject: 'body'
