@@ -1,7 +1,7 @@
-const { Console } = require('console');
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
+const archiver = require('archiver');
 
 
 const skyboxDir = '../skyboxes/';
@@ -19,10 +19,13 @@ var skyboxes = {};
 // converts vtf files to jpgs using vtex2,
 // removes converted vtf files,
 // renames skyboxes to a more three.js friendly style,
-// outputs a json file with skyboxes object
+// outputs a json file with skyboxes object,
+// zips files for download by client
 
 // usage:
 // place skybox textures (.vtf/.jpg) in skyboxDir,
+// create a .txt file with the same name as the skybox texture
+// insert the url of where the skybox was downloaded from
 // run this script
 
 
@@ -155,5 +158,38 @@ function jsonFinished() {
         fs.writeFileSync(outputFile, JSON.stringify(skyboxes))
     } catch (err) {
         console.error(err)
+    }
+    createArchive();
+}
+
+function createArchive() {
+    for (const skybox in skyboxes) {
+        fs.open(skyboxDir + skybox + '.zip', 'r', (err, fd) => {
+            if (err) { 
+                var output = fs.createWriteStream(skyboxDir + skybox + '.zip');
+                var archive = archiver('zip');
+                
+                output.on('close', function () {
+                    console.log('created', skybox + '.zip ' + archive.pointer() + ' total bytes');
+                });
+                
+                archive.on('error', function(err){
+                    throw err;
+                });
+                
+                archive.pipe(output);
+                
+                for (i = 0; i < skyboxes[skybox].array.length; i++) {
+                    // console.log(skyboxDir + skyboxes[skybox].array[i])
+                    archive.file(skyboxDir + skyboxes[skybox].array[i], { name: skyboxes[skybox].array[i] });
+                } 
+                archive.file(skyboxDir + skybox + '.txt', { name: skybox + '.txt' });
+        
+                
+                archive.finalize();
+            } else {
+                console.log(skybox + ".zip already exists")
+            }
+        });
     }
 }
