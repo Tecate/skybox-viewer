@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta property="og:title" content="Skyboxes - Scum Systems: Free skyboxes">
+	<meta property="og:title" content="Free skyboxes">
 	<meta property="og:description" content="Free skyboxes to use in your three.js projects">
+    <meta property="og:image" content="img/meta2.jpg">
 	<meta property="og:url" content="https://skybox.scum.systems/">
     <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
     <canvas class="webgl"></canvas>
     <div id="controls">
-        <div id="skybox-title"></div>
+        <div id="resize-handle"></div>
+        <div class="controls-top">
+            <a href="#" id="skybox-download"></a>
+            <div id="skybox-title"></div>
+            <div id="rand-button">RANDOM SKYBOX</div>
+        </div>
         <div id="skybox-list"></div>
+        <details>
+            <summary>Where do these textures come from?</summary>
+            They are all converted source engine skyboxes from <a href="https://gamebanana.com/mods/cats/561" target="_blank">https://gamebanana.com/mods/cats/561</a>. CC licenced and free to use in your projects
+        </details>
         <details>
         <summary id="code-title">Add this skybox to your three.js project</summary>
         <div id="code"></div>

@@ -15,17 +15,15 @@ import desertdn from './img/desertdn.png';
 import desertrt from './img/desertrt.png';
 import desertlf from './img/desertlf.png';
 
+import resizeElement from './resize-element.js';
 
-var buttonEl = document.createElement('div');
-buttonEl.id = "rand-button"
-buttonEl.innerHTML = 'RANDOM SKYBOX';
+var buttonEl = document.getElementById('rand-button');
 buttonEl.onclick = function(){
     loadRandSkybox();
     for (const child of listEl.children) {
         child.classList.remove('active');
     }
 };
-document.getElementById('controls').appendChild(buttonEl);
 
 var skyboxNameEl = document.getElementById('skybox-title');
 
@@ -59,9 +57,13 @@ fetch('https://scum.systems/misc/skyboxes/')
 
     for (var i = 0; i < skyboxList.length; i++) {
         let rowEl = document.createElement('div');
+        // let downloadEl = document.createElement('a');
+        // downloadEl.classList.add("download-icon");
+        // downloadEl.href = "#";
         rowEl.innerText = skyboxList[i][0].substring(0, skyboxList[i][0].length-10)
         rowEl.setAttribute("data-arrayposition", i)
         listEl.appendChild(rowEl);
+        // rowEl.appendChild(downloadEl);
         rowEl.onclick = function(){
             loadRandSkybox(rowEl);
             for (const child of listEl.children) {
@@ -111,6 +113,7 @@ function randSkybox(name) {
     }
 
     skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
+    document.getElementById("skybox-download").href = skybox[0].substring(0, skybox[0].length-10) + ".zip";
     codeEl.innerText = 
 `const loader = new THREE.CubeTextureLoader();
 const skybox = loader.load([
