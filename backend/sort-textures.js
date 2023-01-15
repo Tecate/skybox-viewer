@@ -1,8 +1,10 @@
 var fs = require('fs');
 
-const skyboxDir = '../skyboxes/'
+const skyboxDir = '../skyboxes/';
+const outputFile = 'skyboxes.json';
 const needsRenaming = new RegExp('^.*(up|dn|lf|rt|ft|bk)\.jpg{1}$', 'i');
 var fileType = ".jpg";
+var itemsProcessed = 0;
 
 fs.readdir(skyboxDir, (err, files) => {
     files.forEach(file => {
@@ -20,9 +22,29 @@ fs.readdir(skyboxDir, (err, files) => {
             fs.rename(skyboxDir + file, skyboxDir + newName, function(err) {
                 console.log("renamed:", file, ">", newName)
                 if ( err ) console.log('ERROR: ' + err);
+                itemsProcessed++;
+                if (itemsProcessed === files.length) {
+                    renameFinished();
+                }
             });
         } else {
             console.log("skipping", file)
+            itemsProcessed++
+            if (itemsProcessed === files.length) {
+                renameFinished();
+            }
         }
     });
 });
+
+function renameFinished() {
+    fs.readdir(skyboxDir, (err, files) => {
+        console.log("writing skyboxes to", outputFile);
+        console.log(files);
+        try {
+            fs.writeFileSync(outputFile, JSON.stringify(files))
+        } catch (err) {
+            console.error(err)
+        }
+    });
+}
