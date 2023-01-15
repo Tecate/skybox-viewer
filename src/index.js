@@ -1,9 +1,12 @@
 import * as THREE from 'three';
 import Stats from 'stats-js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import GUI from 'lil-gui';
 
 import "./style.css";
+import scumfont from "three/examples/fonts/helvetiker_bold.typeface.json";
 
 import desertft from './img/desertft.png';
 import desertbk from './img/desertbk.png';
@@ -127,6 +130,7 @@ function loadRandSkybox(name) {
     var newSkybox = loader.load(randSkybox(name));
     scene.background = newSkybox;
     material.envMap = newSkybox;
+    textMaterial.envMap = newSkybox;
 }
 
 // function main() {
@@ -147,6 +151,34 @@ function loadRandSkybox(name) {
     controls.autoRotate = true;
     controls.enableZoom = false;
     controls.enableDamping = true;
+
+    // https://stackoverflow.com/questions/36676274/how-to-load-a-font-and-render-it-with-textgeometry
+    const loaderfont = new FontLoader();
+    const textMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+
+    loaderfont.load( "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_bold.typeface.json", function ( font ) {
+    
+        const textGeo = new TextGeometry( "SCUM SYSTEMS", {
+    
+            font: font,
+    
+            size: 1,
+            height: 0.2,
+            curveSegments: 12,
+    
+            bevelThickness: 2,
+            bevelSize: 5,
+            bevelEnabled: false
+    
+        } );
+    
+    
+        const mesh = new THREE.Mesh( textGeo, textMaterial );
+        mesh.position.set( -5.5, 0, 0 );
+    
+        scene.add( mesh );
+    
+    } );
 
     const loader = new THREE.CubeTextureLoader();
 
@@ -198,23 +230,23 @@ function loadRandSkybox(name) {
 
 // main();
 
-var stats = new Stats();
-stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
+// var stats = new Stats();
+// stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+// document.body.appendChild( stats.dom );
 
-function animate() {
+// function animate() {
 
-	stats.begin();
+// 	stats.begin();
 
-	// monitored code goes here
+// 	// monitored code goes here
 
-	stats.end();
+// 	stats.end();
 
-	requestAnimationFrame( animate );
+// 	requestAnimationFrame( animate );
 
-}
+// }
 
-requestAnimationFrame( animate );
+// requestAnimationFrame( animate );
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
