@@ -47,11 +47,8 @@ for (var skybox in skyboxJson) {
     listEl.appendChild(rowEl);
 
     rowEl.onclick = function(){
-        loadSkybox(rowEl.innerText);
-        for (const child of listEl.children) {
-            child.classList.remove('active');
-        }
-        rowEl.classList.add("active");
+        if (!this.classList.contains("active"))
+            loadSkybox(rowEl.innerText);
     };
 }
 
