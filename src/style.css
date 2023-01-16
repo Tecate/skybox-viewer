@@ -42,7 +42,7 @@
   }
 
   #controls #rand-button {
-    display: inline-block;
+    /* display: inline-block; */
     float: right;
     font-family: monospace;
     font-size: 18px;

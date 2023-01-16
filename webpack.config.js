@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     module: {
@@ -21,7 +22,12 @@ module.exports = {
             template: './src/index.html',
             filename: 'index.html',
             inject: 'body'
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from: "skyboxes/*", to: "skyboxes/*" }
+            ],
+        }),
   ],
   devServer: {
     static: {
