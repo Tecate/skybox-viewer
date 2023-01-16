@@ -16,18 +16,18 @@ module.exports = {
         ]
     },
     plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: "./skyboxes/*" }
+            ],
+        }),
         new HtmlWebpackPlugin({
             hash: true,
             title: 'Skyboxes - Scum.Systems',
             template: './src/index.html',
             filename: 'index.html',
             inject: 'body'
-        }),
-        new CopyPlugin({
-            patterns: [
-                { from: "skyboxes/*", to: "skyboxes/*" }
-            ],
-        }),
+        })
   ],
   devServer: {
     static: {
