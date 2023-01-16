@@ -26,7 +26,7 @@ import skyboxJson from '../backend/skyboxes.json'
 
 var buttonEl = document.getElementById('rand-button');
 buttonEl.onclick = function(){
-    loadRandSkybox();
+    loadSkybox();
     for (const child of listEl.children) {
         child.classList.remove('active');
     }
@@ -41,6 +41,67 @@ codeEl.onclick = function(){
     // document.getElementById("code-title")
 }
 var listEl = document.getElementById('skybox-list');
+
+console.log(skyboxJson);
+for (var skybox in skyboxJson) {
+    let rowEl = document.createElement('div');
+    rowEl.innerText = skybox;
+    // rowEl.setAttribute("data-filename", skybox)
+    listEl.appendChild(rowEl);
+
+    rowEl.onclick = function(){
+        loadSkybox(rowEl.innerText);
+        for (const child of listEl.children) {
+            child.classList.remove('active');
+        }
+        rowEl.classList.add("active");
+    };
+}
+
+function loadSkybox(name) {
+    var newSkybox = loader.load(getSkybox(name));
+    scene.background = newSkybox;
+    material.envMap = newSkybox;
+    textMaterial.envMap = newSkybox;
+}
+
+function getSkybox(name) {
+    // console.log("getSkybox", skyboxJson.length)
+    var count = Object.keys(skyboxJson).length;
+    var keys = Object.keys(skyboxJson);
+    var skybox;
+    let withPaths = [];
+
+    if (count == 0) {
+        console.log("No skyboxes found.");
+        return;
+    }
+    if (typeof name !== 'undefined') {
+        skybox = skyboxJson[name].array;
+    } else {
+        // pick random skybox
+        skybox = skyboxJson[keys[ keys.length * Math.random() << 0]].array;
+        console.log(skyboxJson[keys[ keys.length * Math.random() << 0]])
+    }
+
+    skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
+    document.getElementById("skybox-download").href = 'skyboxes/' + skybox[0].substring(0, skybox[0].length-10) + ".zip";
+    codeEl.innerText = 
+`const loader = new THREE.CubeTextureLoader();
+const skybox = loader.load([
+    ${skybox[0]},
+    ${skybox[1]},
+    ${skybox[2]},
+    ${skybox[3]},
+    ${skybox[4]},
+    ${skybox[5]},
+]);
+scene.background = skybox;`
+    for (var i = 0; i < skybox.length; i++) {
+        withPaths[i] = "skyboxes/" + skybox[i];
+    }
+    return withPaths
+}
 
 // var skyboxList = [];
 // fetch('https://scum.systems/misc/skyboxes/')
@@ -72,7 +133,7 @@ var listEl = document.getElementById('skybox-list');
 //         listEl.appendChild(rowEl);
 //         // rowEl.appendChild(downloadEl);
 //         rowEl.onclick = function(){
-//             loadRandSkybox(rowEl);
+//             loadSkybox(rowEl);
 //             for (const child of listEl.children) {
 //                 child.classList.remove('active');
 //             }
@@ -80,44 +141,10 @@ var listEl = document.getElementById('skybox-list');
 //         };
 //     }
 //     // get first skybox
-//     loadRandSkybox();
+//     loadSkybox();
 // });
 
-console.log(skyboxJson);
-for (var skybox in skyboxJson) {
-    let rowEl = document.createElement('div');
-    rowEl.innerText = skybox;
-    // rowEl.setAttribute("data-arrayposition", i)
-    listEl.appendChild(rowEl);
-
-    rowEl.onclick = function(){
-        loadRandSkybox(rowEl);
-        for (const child of listEl.children) {
-            child.classList.remove('active');
-        }
-        rowEl.classList.add("active");
-    };
-
-    // get first skybox
-    // loadRandSkybox();
-}
-
-function randSkybox(name) {
-    if (skyboxJson.length == 0) {
-        console.log("No skyboxes found.");
-        return;
-    }
-    if (typeof name !== 'undefined') {
-        // var skybox = skyboxList[name.dataset.arrayposition]
-    } else {
-        // pick random skybox
-        // var skybox = skyboxList[Math.floor(Math.random() * skyboxList.length)];
-        var skybox
-    }
-}
-
-
-// function randSkybox(name) {
+// function getSkybox(name) {
 //     if (skyboxList.length == 0) {
 //         console.log("No skyboxes found.");
 //         return;
@@ -170,19 +197,7 @@ function randSkybox(name) {
 //     return sortedGroup;
 // }
 
-function loadRandSkybox(name) {
-    // var newSkybox = loader.load(randSkybox(name));
-    console.log(skyboxJson.desert.array.length)
-    for (var i = 0; i < skyboxJson.desert.array.length; i++) {
-        console.log("tf")
-        skyboxJson.desert.array[i] = "skyboxes/" + skyboxJson.desert.array[i];
-    }
-    console.log(skyboxJson.desert.array)
-    var newSkybox = loader.load(skyboxJson.desert.array)
-    scene.background = newSkybox;
-    material.envMap = newSkybox;
-    textMaterial.envMap = newSkybox;
-}
+
 
 // function main() {
     const canvas = document.querySelector('.webgl');
@@ -250,7 +265,7 @@ function loadRandSkybox(name) {
         spheres.push( mesh );
     }
 
-    loadRandSkybox();
+    loadSkybox();
 
 
     // render loop

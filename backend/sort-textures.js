@@ -34,9 +34,9 @@ fs.readdir(skyboxDir, (err, files) => {
         if (isVtf.test(file)) {
             var command;
             if (process.platform === 'win32') {
-                command = 'vtex2-win extract -f jpg ' + path.resolve('../skyboxes/' + file);
+                command = 'vtex2-win extract -f jpg ' + path.resolve(skyboxDir + file);
             } else {
-                command = 'vtex2 extract -f jpg ' + path.resolve('../skyboxes/' + file);
+                command = 'vtex2 extract -f jpg ' + path.resolve(skyboxDir + file);
             }
             var vtex2 = exec(command, function(err, stdout, stderr) {
                 if (err) {
@@ -46,11 +46,11 @@ fs.readdir(skyboxDir, (err, files) => {
                 console.log(stdout);
             });
             vtex2.on('exit', function() {
-                fs.unlink(path.resolve('../skyboxes/' + file), (err) => {
+                fs.unlink(path.resolve(skyboxDir + file), (err) => {
                     if (err) {
                         throw err;
                     }
-                    console.log("deleted", path.resolve('../skyboxes/' + file));
+                    console.log("deleted", path.resolve(skyboxDir + file));
                     itemsProcessed++;
                     if (itemsProcessed === files.length) {
                         conversionFinished();
