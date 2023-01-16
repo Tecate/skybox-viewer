@@ -27,9 +27,6 @@ import skyboxJson from '../backend/skyboxes.json'
 var buttonEl = document.getElementById('rand-button');
 buttonEl.onclick = function(){
     loadSkybox();
-    for (const child of listEl.children) {
-        child.classList.remove('active');
-    }
 };
 
 var skyboxNameEl = document.getElementById('skybox-title');
@@ -86,6 +83,12 @@ function getSkybox(name) {
 
     skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
     document.getElementById("skybox-download").href = 'skyboxes/' + skybox[0].substring(0, skybox[0].length-10) + ".zip";
+    for (let child of listEl.children) {
+        child.classList.remove('active');
+        if (child.innerText == skybox[0].substring(0, skybox[0].length-10)) {
+            child.classList.add("active")
+        }
+     }
     codeEl.innerText = 
 `const loader = new THREE.CubeTextureLoader();
 const skybox = loader.load([
