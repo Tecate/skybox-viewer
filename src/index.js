@@ -10,18 +10,21 @@ import scumfont from "three/examples/fonts/helvetiker_bold.typeface.json";
 import resizeElement from './resize-element.js';
 import skyboxJson from '../backend/skyboxes.json'
 
-var buttonEl = document.getElementById('rand-button');
-buttonEl.onclick = function(){
-    loadSkybox();
-};
-
+var randButtonEl = document.getElementById('rand-button');
+var nextButtonEl = document.getElementById("next");
+var prevButtonEl = document.getElementById("prev");
 var skyboxNameEl = document.getElementById('skybox-title');
-
 var codeEl = document.getElementById('code');
-codeEl.onclick = function(){
-    navigator.clipboard.writeText(codeEl.innerText);
-}
 var listEl = document.getElementById('skybox-list');
+
+
+randButtonEl.onclick = function() { loadSkybox(); };
+
+codeEl.onclick = function(){
+    // chrome requests permissions for this
+    navigator.clipboard.writeText(codeEl.innerText);
+    alert("Copied code. Yes, I know alert() is probably the laziest way to display this message.");
+}
 
 var skyboxCount = 0;
 for (var skybox in skyboxJson) {
@@ -47,20 +50,8 @@ document.onkeydown = function(e) {
     }
 }
 
-document.getElementById("next").onclick = function () {
-    nextSkybox(1)
-}
-
-document.getElementById("prev").onclick = function () {
-    nextSkybox(-1)
-}
-
-function loadSkybox(name) {
-    var newSkybox = loader.load(getSkybox(name));
-    scene.background = newSkybox;
-    material.envMap = newSkybox;
-    textMaterial.envMap = newSkybox;
-}
+nextButtonEl.onclick = function () { nextSkybox(1) }
+prevButtonEl.onclick = function () { nextSkybox(-1) }
 
 function nextSkybox(direction) {
     for (let child of listEl.children) {
@@ -72,8 +63,14 @@ function nextSkybox(direction) {
      }
 }
 
+function loadSkybox(name) {
+    var newSkybox = loader.load(getSkybox(name));
+    scene.background = newSkybox;
+    material.envMap = newSkybox;
+    textMaterial.envMap = newSkybox;
+}
+
 function getSkybox(name) {
-    // console.log("getSkybox", skyboxJson.length)
     var count = Object.keys(skyboxJson).length;
     var keys = Object.keys(skyboxJson);
     var skybox, randbox;
@@ -90,8 +87,6 @@ function getSkybox(name) {
         // pick random skybox
         var name = keys[ keys.length * Math.random() << 0];
         skybox = skyboxJson[name].array;
-        // skybox = randbox.array;
-        console.log(skyboxJson[keys[ keys.length * Math.random() << 0]])
     }
 
     skyboxNameEl.innerText = name;
@@ -101,7 +96,7 @@ function getSkybox(name) {
         document.getElementById("skybox-source").target = "";
         document.getElementById("skybox-source").href = "#";
     } else {
-        document.getElementById("skybox-source").innerText = "Source";
+        document.getElementById("skybox-source").innerText = "Credit";
         document.getElementById("skybox-source").target = "_blank";
         document.getElementById("skybox-source").href = skyboxJson[name].source;
     }
@@ -152,38 +147,27 @@ scene.background = skybox;`
     controls.enableDamping = true;
 
     // https://stackoverflow.com/questions/36676274/how-to-load-a-font-and-render-it-with-textgeometry
-    const loaderfont = new FontLoader();
+    const fontloader = new FontLoader();
     const textMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 
-    loaderfont.load( "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_bold.typeface.json", function ( font ) {
-    
-        const textGeo = new TextGeometry( "SCUM SYSTEMS", {
-    
-            font: font,
-    
-            size: 1,
-            height: 0.2,
-            curveSegments: 12,
-    
-            bevelThickness: 2,
-            bevelSize: 5,
-            bevelEnabled: false
-    
-        } );
-    
-    
-        const mesh = new THREE.Mesh( textGeo, textMaterial );
-        mesh.position.set( -5.5, 0, 0 );
-    
-        scene.add( mesh );
-    
+    scumfont = fontloader.parse(scumfont);
+    const textGeo = new TextGeometry( "SCUM SYSTEMS", {
+        font: scumfont,
+        size: 1,
+        height: 0.2,
+        curveSegments: 12,
+        bevelThickness: 2,
+        bevelSize: 5,
+        bevelEnabled: false
     } );
+
+    const mesh = new THREE.Mesh( textGeo, textMaterial );
+    mesh.position.set( -5.5, 0, 0 );
+    scene.add( mesh );
 
     const loader = new THREE.CubeTextureLoader();
 
-
     const spheres = [];
-
     const geometry = new THREE.SphereGeometry( 0.1, 32, 16 );
     // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: skybox } );
     const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
@@ -199,7 +183,6 @@ scene.background = skybox;`
     }
 
     loadSkybox();
-
 
     // render loop
     function render(time) {
