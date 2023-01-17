@@ -7,22 +7,8 @@ import GUI from 'lil-gui';
 
 import "./style.css";
 import scumfont from "three/examples/fonts/helvetiker_bold.typeface.json";
-
-// import desertft from './img/desertft.png';
-// import desertbk from './img/desertbk.png';
-// import desertup from './img/desertup.png';
-// import desertdn from './img/desertdn.png';
-// import desertrt from './img/desertrt.png';
-// import desertlf from './img/desertlf.png';
-
 import resizeElement from './resize-element.js';
-
 import skyboxJson from '../backend/skyboxes.json'
-
-// var req = require.context("../skyboxes", true, /(\.zip|\.jpg)$/im);
-// req.keys().forEach(function(key){
-//     req(key);
-// });
 
 var buttonEl = document.getElementById('rand-button');
 buttonEl.onclick = function(){
@@ -68,6 +54,7 @@ function getSkybox(name) {
 
     if (count == 0) {
         console.log("No skyboxes found.");
+        skyboxNameEl.innerText = "No skyboxes found.";
         return;
     }
     if (typeof name !== 'undefined') {
@@ -81,14 +68,20 @@ function getSkybox(name) {
 
     skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
     document.getElementById("skybox-download").href = 'skyboxes/' + skybox[0].substring(0, skybox[0].length-10) + ".zip";
-    document.getElementById("skybox-source").innerText = randbox.source;
-    document.getElementById("skybox-source").href = randbox.source;
+    // if (randbox.source === undefined) {
+    //     document.getElementById("skybox-source").innerText = "Sorry, no source";
+    //     document.getElementById("skybox-source").href = "#";
+    // } else {
+        document.getElementById("skybox-source").href = randbox.source;
+    // }
+
     for (let child of listEl.children) {
         child.classList.remove('active');
         if (child.innerText == skybox[0].substring(0, skybox[0].length-10)) {
             child.classList.add("active")
         }
      }
+
     codeEl.innerText = 
 `const loader = new THREE.CubeTextureLoader();
 const skybox = loader.load([
@@ -100,106 +93,12 @@ const skybox = loader.load([
     ${skybox[5]},
 ]);
 scene.background = skybox;`
+
     for (var i = 0; i < skybox.length; i++) {
         withPaths[i] = "skyboxes/" + skybox[i];
     }
     return withPaths
 }
-
-// var skyboxList = [];
-// fetch('https://scum.systems/misc/skyboxes/')
-//   .then((response) => response.json())
-//   .then((data) => {
-//     // detect skyboxes with more than 6 files & remove
-//     // const regex = new RegExp('/^(.*?)\-(pos|neg)\-[x-y]\.jpg/');
-//     // for (var i = 0; i < data.length; i++) {
-//     //     console.log(regex.test(data[i].name), data[i].name);
-//     // }
-
-//     // also need to check if all images are the same width & height
-
-//     // group into arrays of 6
-//     for (var i = 0, j = 0; i < data.length; i++) {
-//         if (i >= 6 && i % 6 === 0)
-//             j++;
-//         skyboxList[j] = skyboxList[j] || [];
-//         skyboxList[j].push(data[i].name)
-//     }
-
-//     for (var i = 0; i < skyboxList.length; i++) {
-//         let rowEl = document.createElement('div');
-//         // let downloadEl = document.createElement('a');
-//         // downloadEl.classList.add("download-icon");
-//         // downloadEl.href = "#";
-//         rowEl.innerText = skyboxList[i][0].substring(0, skyboxList[i][0].length-10)
-//         rowEl.setAttribute("data-arrayposition", i)
-//         listEl.appendChild(rowEl);
-//         // rowEl.appendChild(downloadEl);
-//         rowEl.onclick = function(){
-//             loadSkybox(rowEl);
-//             for (const child of listEl.children) {
-//                 child.classList.remove('active');
-//             }
-//             rowEl.classList.add("active");
-//         };
-//     }
-//     // get first skybox
-//     loadSkybox();
-// });
-
-// function getSkybox(name) {
-//     if (skyboxList.length == 0) {
-//         console.log("No skyboxes found.");
-//         return;
-//     }
-
-//     if (typeof name !== 'undefined') {
-//         var skybox = skyboxList[name.dataset.arrayposition]
-//     } else {
-//         // pick random skybox
-//         var skybox = skyboxList[Math.floor(Math.random() * skyboxList.length)];
-//     }
-
-//     // sort into loader format
-//     var sortedGroup = [];
-//     var imagePath = "https://scum.systems/misc/skyboxes/"
-//     for (var i = 0; i < 6; i++) {
-//         if (skybox[i].indexOf("-pos-x") !== -1)
-//             sortedGroup[0] = imagePath + skybox[i];
-            
-//         if (skybox[i].indexOf("-neg-x") !== -1)
-//             sortedGroup[1] = imagePath + skybox[i];
-            
-//         if (skybox[i].indexOf("-pos-y") !== -1)
-//             sortedGroup[2] = imagePath + skybox[i];
-
-//         if (skybox[i].indexOf("-neg-y") !== -1)
-//             sortedGroup[3] = imagePath + skybox[i];
-            
-//         if (skybox[i].indexOf("-pos-z") !== -1)
-//             sortedGroup[4] = imagePath + skybox[i];
-            
-//         if (skybox[i].indexOf("-neg-z") !== -1)
-//             sortedGroup[5] = imagePath + skybox[i];
-//     }
-
-//     skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
-//     document.getElementById("skybox-download").href = skybox[0].substring(0, skybox[0].length-10) + ".zip";
-//     codeEl.innerText = 
-// `const loader = new THREE.CubeTextureLoader();
-// const skybox = loader.load([
-//     ${sortedGroup[0]},
-//     ${sortedGroup[1]},
-//     ${sortedGroup[2]},
-//     ${sortedGroup[3]},
-//     ${sortedGroup[4]},
-//     ${sortedGroup[5]},
-// ]);
-// scene.background = skybox;`
-
-//     return sortedGroup;
-// }
-
 
 
 // function main() {
