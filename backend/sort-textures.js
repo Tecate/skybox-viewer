@@ -22,6 +22,9 @@ var skyboxes = {};
 // outputs a json file with skyboxes object,
 // zips files for download by client
 
+// todo: check image dimensions with:
+// npm install image-size --save
+
 // usage:
 // place skybox textures (.vtf/.jpg) in skyboxDir,
 // create a .txt file with the same name as the skybox texture

@@ -63,7 +63,7 @@ function getSkybox(name) {
     // console.log("getSkybox", skyboxJson.length)
     var count = Object.keys(skyboxJson).length;
     var keys = Object.keys(skyboxJson);
-    var skybox;
+    var skybox, randbox;
     let withPaths = [];
 
     if (count == 0) {
@@ -74,12 +74,15 @@ function getSkybox(name) {
         skybox = skyboxJson[name].array;
     } else {
         // pick random skybox
-        skybox = skyboxJson[keys[ keys.length * Math.random() << 0]].array;
+        randbox = skyboxJson[keys[ keys.length * Math.random() << 0]];
+        skybox = randbox.array;
         console.log(skyboxJson[keys[ keys.length * Math.random() << 0]])
     }
 
     skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
     document.getElementById("skybox-download").href = 'skyboxes/' + skybox[0].substring(0, skybox[0].length-10) + ".zip";
+    document.getElementById("skybox-source").innerText = randbox.source;
+    document.getElementById("skybox-source").href = randbox.source;
     for (let child of listEl.children) {
         child.classList.remove('active');
         if (child.innerText == skybox[0].substring(0, skybox[0].length-10)) {
