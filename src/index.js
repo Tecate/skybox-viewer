@@ -6,7 +6,7 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import GUI from 'lil-gui';
 
 import "./style.css";
-import scumfont from "three/examples/fonts/helvetiker_bold.typeface.json";
+import scumfont from "./upilkering.json";
 import resizeElement from './resize-element.js';
 import skyboxJson from '../backend/skyboxes.json'
 
@@ -143,7 +143,7 @@ scene.background = skybox;`
 
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.autoRotate = true;
-    controls.enableZoom = false;
+    controls.enableZoom = true;
     controls.enableDamping = true;
 
     // https://stackoverflow.com/questions/36676274/how-to-load-a-font-and-render-it-with-textgeometry
@@ -153,16 +153,16 @@ scene.background = skybox;`
     scumfont = fontloader.parse(scumfont);
     const textGeo = new TextGeometry( "SCUM SYSTEMS", {
         font: scumfont,
-        size: 1,
+        size: 3,
         height: 0.2,
         curveSegments: 12,
-        bevelThickness: 2,
-        bevelSize: 5,
-        bevelEnabled: false
+        bevelThickness: 0.05,
+        bevelSize: 0.05,
+        bevelEnabled: true
     } );
 
     const mesh = new THREE.Mesh( textGeo, textMaterial );
-    mesh.position.set( -5.5, 0, 0 );
+    mesh.position.set( -7, 0, 0 );
     scene.add( mesh );
 
     const loader = new THREE.CubeTextureLoader();
