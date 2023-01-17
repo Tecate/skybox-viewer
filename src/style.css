@@ -41,7 +41,7 @@
     background-position: center center;
   }
 
-  #controls #rand-button {
+  .button {
     /* display: inline-block; */
     float: right;
     font-family: monospace;

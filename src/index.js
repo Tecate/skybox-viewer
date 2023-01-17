@@ -23,10 +23,12 @@ codeEl.onclick = function(){
 }
 var listEl = document.getElementById('skybox-list');
 
+var skyboxCount = 0;
 for (var skybox in skyboxJson) {
     let rowEl = document.createElement('div');
     rowEl.innerText = skybox;
-    // rowEl.setAttribute("data-filename", skybox)
+    rowEl.setAttribute("data-position", skyboxCount)
+    skyboxCount++;
     listEl.appendChild(rowEl);
 
     rowEl.onclick = function(){
@@ -35,11 +37,29 @@ for (var skybox in skyboxJson) {
     };
 }
 
+document.getElementById("next").onclick = function () {
+    nextSkybox(1)
+}
+
+document.getElementById("prev").onclick = function () {
+    nextSkybox(-1)
+}
+
 function loadSkybox(name) {
     var newSkybox = loader.load(getSkybox(name));
     scene.background = newSkybox;
     material.envMap = newSkybox;
     textMaterial.envMap = newSkybox;
+}
+
+function nextSkybox(direction) {
+    for (let child of listEl.children) {
+        if (child.classList.contains("active")) {
+            var nextbox = Object.keys(skyboxJson)[parseInt(child.dataset.position)+direction];
+            if (nextbox !== undefined)   
+                loadSkybox(nextbox);
+        }
+     }
 }
 
 function getSkybox(name) {
@@ -58,23 +78,27 @@ function getSkybox(name) {
         skybox = skyboxJson[name].array;
     } else {
         // pick random skybox
-        randbox = skyboxJson[keys[ keys.length * Math.random() << 0]];
-        skybox = randbox.array;
+        var name = keys[ keys.length * Math.random() << 0];
+        skybox = skyboxJson[name].array;
+        // skybox = randbox.array;
         console.log(skyboxJson[keys[ keys.length * Math.random() << 0]])
     }
 
-    skyboxNameEl.innerText = skybox[0].substring(0, skybox[0].length-10);
-    document.getElementById("skybox-download").href = 'skyboxes/' + skybox[0].substring(0, skybox[0].length-10) + ".zip";
-    // if (randbox.source === undefined) {
-    //     document.getElementById("skybox-source").innerText = "Sorry, no source";
-    //     document.getElementById("skybox-source").href = "#";
-    // } else {
-        document.getElementById("skybox-source").href = randbox.source;
-    // }
+    skyboxNameEl.innerText = name;
+    document.getElementById("skybox-download").href = 'skyboxes/' + name + ".zip";
+    if (skyboxJson[name].source === undefined) {
+        document.getElementById("skybox-source").innerText = "Sorry, no source";
+        document.getElementById("skybox-source").target = "";
+        document.getElementById("skybox-source").href = "#";
+    } else {
+        document.getElementById("skybox-source").innerText = "Source";
+        document.getElementById("skybox-source").target = "_blank";
+        document.getElementById("skybox-source").href = skyboxJson[name].source;
+    }
 
     for (let child of listEl.children) {
         child.classList.remove('active');
-        if (child.innerText == skybox[0].substring(0, skybox[0].length-10)) {
+        if (child.innerText == name) {
             child.classList.add("active")
         }
      }
