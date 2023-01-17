@@ -18,14 +18,11 @@ buttonEl.onclick = function(){
 var skyboxNameEl = document.getElementById('skybox-title');
 
 var codeEl = document.getElementById('code');
-codeEl.id = "code";
 codeEl.onclick = function(){
     navigator.clipboard.writeText(codeEl.innerText);
-    // document.getElementById("code-title")
 }
 var listEl = document.getElementById('skybox-list');
 
-console.log(skyboxJson);
 for (var skybox in skyboxJson) {
     let rowEl = document.createElement('div');
     rowEl.innerText = skybox;
