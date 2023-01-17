@@ -37,6 +37,16 @@ for (var skybox in skyboxJson) {
     };
 }
 
+document.onkeydown = function(e) {
+    e = e || window.event;
+    if (e.keyCode == '37') {
+       nextSkybox(-1);
+    }
+    else if (e.keyCode == '39') {
+       nextSkybox(1);
+    }
+}
+
 document.getElementById("next").onclick = function () {
     nextSkybox(1)
 }
