@@ -59,6 +59,7 @@ function nextSkybox(direction) {
             var nextbox = Object.keys(skyboxJson)[parseInt(child.dataset.position)+direction];
             if (nextbox !== undefined)   
                 loadSkybox(nextbox);
+            break;
         }
      }
 }
