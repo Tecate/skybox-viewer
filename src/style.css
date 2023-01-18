@@ -69,7 +69,8 @@
     text-decoration: none;
   }
 
-  #skybox-source {
+  #skybox-title:hover {
+    text-decoration: underline;
   }
 
   #skybox-list {
@@ -147,7 +148,7 @@
   @media only screen and (max-width: 450px) {
     #controls {
       width: 100vw;
-      height: 20vh;
+      height: 45px;
     }
     /* #code { display: none; } */
   }
