@@ -93,13 +93,13 @@ function getSkybox(name) {
     skyboxNameEl.innerText = name;
     document.getElementById("skybox-download").href = 'skyboxes/' + name + ".zip";
     if (skyboxJson[name].source === undefined) {
-        document.getElementById("skybox-source").innerText = "Sorry, no source";
-        document.getElementById("skybox-source").target = "";
-        document.getElementById("skybox-source").href = "#";
+        // document.getElementById("skybox-source").innerText = "Sorry, no source";
+        document.getElementById("skybox-title").target = "";
+        document.getElementById("skybox-title").href = "#";
     } else {
-        document.getElementById("skybox-source").innerText = "Credit";
-        document.getElementById("skybox-source").target = "_blank";
-        document.getElementById("skybox-source").href = skyboxJson[name].source;
+        // document.getElementById("skybox-title").innerText = "Credit";
+        document.getElementById("skybox-title").target = "_blank";
+        document.getElementById("skybox-title").href = skyboxJson[name].source;
     }
 
     for (let child of listEl.children) {
