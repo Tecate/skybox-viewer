@@ -1,6 +1,10 @@
-# Skybox Library
+# Skybox Viewer
+
+[skybox.scum.systems](https://skybox.scum.systems)
 
 This converts vtf skyboxes and displays them using three.js
+
+![Screenshot](https://raw.githubusercontent.com/Tecate/skybox-viewer/main/screenshot.png)
 
 ## Installation
 
