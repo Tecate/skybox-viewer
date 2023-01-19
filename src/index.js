@@ -52,10 +52,10 @@ export const loader = new THREE.CubeTextureLoader();
 const spheres = [];
 const geometry = new THREE.SphereGeometry( 0.1, 32, 16 );
 // const material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: skybox } );
-export const material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+export const sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 
 for ( let i = 0; i < 5; i ++ ) {
-    const mesh = new THREE.Mesh( geometry, material );
+    const mesh = new THREE.Mesh( geometry, sphereMaterial );
     mesh.position.x = Math.random() * 10 - 5;
     mesh.position.y = Math.random() * 10 - 5;
     mesh.position.z = Math.random() * 10 - 5;
@@ -93,10 +93,7 @@ function render(time) {
     requestAnimationFrame(render);
 }
 
-requestAnimationFrame(render);    
-
-
-
+requestAnimationFrame(render);
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;

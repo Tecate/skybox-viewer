@@ -1,5 +1,5 @@
 import skyboxJson from '../backend/skyboxes.json'
-import { loader, scene, material, textMaterial } from './index.js'
+import { loader, scene, sphereMaterial, textMaterial } from './index.js'
 
 var randButtonEl = document.getElementById('rand-button');
 var nextButtonEl = document.getElementById("next");
@@ -58,7 +58,7 @@ function nextSkybox(direction) {
 export function loadSkybox(name) {
     var newSkybox = loader.load(getSkybox(name));
     scene.background = newSkybox;
-    material.envMap = newSkybox;
+    sphereMaterial.envMap = newSkybox;
     textMaterial.envMap = newSkybox;
 }
 
