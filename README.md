@@ -4,7 +4,7 @@
 
 This converts vtf skyboxes and displays them using three.js
 
-![Screenshot](https://raw.githubusercontent.com/Tecate/skybox-viewer/main/screenshot.png)
+![Screenshot](https://github.com/Tecate/skybox-viewer/raw/main/screenshot.png)
 
 ## Installation
 
