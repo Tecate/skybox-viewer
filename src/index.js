@@ -32,9 +32,9 @@ controls.enableDamping = true;
 const fontloader = new FontLoader();
 export const textMaterial = new THREE.MeshBasicMaterial( { color: 0xffffff } );
 
-scumfont = fontloader.parse(scumfont);
+var parsedFont = fontloader.parse(scumfont);
 const textGeo = new TextGeometry( "SCUM SYSTEMS", {
-    font: scumfont,
+    font: parsedFont,
     size: 3,
     height: 0.2,
     curveSegments: 12,
