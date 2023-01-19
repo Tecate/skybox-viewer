@@ -1,3 +1,4 @@
 node_modules
 sample-skyboxes
+dist/
 backend/skyboxes.json
