@@ -39,4 +39,3 @@ const mouseUpHandler = function () {
 };
 
 ele.addEventListener('mousedown', mouseDownHandler)
-ele.addEventListener('touchStart', mouseDownHandler)
