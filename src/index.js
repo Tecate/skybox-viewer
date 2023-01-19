@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import Stats from 'stats-js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
@@ -9,6 +8,7 @@ import "./style.css";
 import scumfont from "./upilkering.json";
 import resizeElement from './resize-element.js';
 import { loadSkybox } from './ui.js';
+// import './fps.js';
 
 
 const canvas = document.querySelector('.webgl');
@@ -97,23 +97,7 @@ function render(time) {
 requestAnimationFrame(render);    
 
 
-// var stats = new Stats();
-// stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-// document.body.appendChild( stats.dom );
 
-// function animate() {
-
-// 	stats.begin();
-
-// 	// monitored code goes here
-
-// 	stats.end();
-
-// 	requestAnimationFrame( animate );
-
-// }
-
-// requestAnimationFrame( animate );
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
